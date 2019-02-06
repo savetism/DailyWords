@@ -1,39 +1,13 @@
 <template>
   <v-app style="background: #E3E3EE">
-    <!-- Side Navbar
-    <v-navigation-drawer
-      app
-      temporary
-      fixed
-      v-model="sideNav"
-    >
-      <v-toolbar
-        color="accent"
-        dark
-        flat
-      >
-        <v-toolbar-side-icon @click="toggleSideNav"></v-toolbar-side-icon>
-        <router-link
-          to="/"
-          tag="span"
-          style="cursor: pointer"
-        >
-          <h1 class="title pl-3">VueShare</h1>
-        </router-link>
-      </v-toolbar>
 
-      <v-divider></v-divider>
-
-    </v-navigation-drawer> -->
-
-    <!-- Horizontal Navbar -->
     <v-toolbar
       fixed
       color="primary"
       dark
     >
       <!-- App Title -->
-      <v-toolbar-title class="hidden-xs-only">
+      <v-toolbar-title>
         <router-link
           to="/"
           tag="span"
@@ -42,132 +16,52 @@
           Daily Words
         </router-link>
       </v-toolbar-title>
-
       <v-spacer></v-spacer>
-
-      <!-- Search Results Card -->
-      <v-card
-        dark
-        v-if="searchResults.length"
-        id="search__card"
-      >
-        <v-list>
-          <v-list-tile
-            v-for="result in searchResults"
-            :key="result._id"
-            @click="goToSearchResult(result._id)"
-          >
-            <v-list-tile-title>
-              {{result.title}} -
-              <span class="font-weight-thin">{{formatDescription(result.description)}}</span>
-            </v-list-tile-title>
-
-            <!-- Show Icon if Result Favorited by User -->
-            <v-list-tile-action v-if="checkIfUserFavorite(result._id)">
-              <v-icon>favorite</v-icon>
-            </v-list-tile-action>
-          </v-list-tile>
-        </v-list>
-      </v-card>
-
-      <v-spacer></v-spacer>
-
-      <!-- Horizontal Navbar Links -->
-      <v-toolbar-items class="hidden-xs-only">
+      <v-toolbar-items>
         <v-btn
+          class="hidden-xs-only"
           flat
           v-for="item in horizontalNavItems"
           :key="item.title"
           :to="item.link"
         >
-          <v-icon
-            class="hidden-sm-only"
-            left
-          >{{item.icon}}</v-icon>
+          <v-icon left>{{item.icon}}</v-icon>
           {{item.title}}
         </v-btn>
 
-        <!-- Profile Button -->
-        <v-btn
-          flat
-          to="/profile"
-          v-if="user"
+        <v-menu
+          class="hidden-sm-and-up"
+          transition="slide-y-transition"
+          bottom
         >
-          <v-icon
-            class="hidden-sm-only"
-            left
-          >account_box</v-icon>
-          <v-badge
-            right
-            color="blue darken-2"
-            :class="{ 'bounce': badgeAnimated }"
-          >
-            <span
-              slot="badge"
-              v-if="userFavorites.length"
-            >{{userFavorites.length}}</span>
-            Profile
-          </v-badge>
-        </v-btn>
-
-        <!-- Signout Button -->
-        <v-btn
-          flat
-          v-if="user"
-          @click="handleSignoutUser"
-        >
-          <v-icon
-            class="hidden-sm-only"
-            left
-          >exit_to_app</v-icon>
-          Signout
-        </v-btn>
-
+          <v-toolbar-title slot="activator">
+            <v-toolbar-side-icon></v-toolbar-side-icon>
+          </v-toolbar-title>
+          <v-list>
+            <v-list-tile
+              :key="item.title"
+              v-for="item in horizontalNavItems"
+            >
+              <v-list-tile-title>
+                <router-link
+                  :to="item.link"
+                  tag="span"
+                  style="cursor: pointer"
+                >
+                  {{item.title}}
+                </router-link>
+              </v-list-tile-title>
+            </v-list-tile>
+          </v-list>
+        </v-menu>
       </v-toolbar-items>
     </v-toolbar>
 
-    <!-- App Content -->
     <main>
       <v-container class="mt-4">
         <transition name="fade">
           <router-view />
         </transition>
-
-        <!-- Auth Snackbar -->
-        <v-snackbar
-          v-model="authSnackbar"
-          color="success"
-          :timeout='5000'
-          bottom
-          left
-        >
-          <v-icon class="mr-3">check_circle</v-icon>
-          <h3>You are now signed in!</h3>
-          <v-btn
-            dark
-            flat
-            @click="authSnackbar = false"
-          >Close</v-btn>
-        </v-snackbar>
-
-        <!-- Auth Error Snackbar -->
-        <v-snackbar
-          v-if="authError"
-          v-model="authErrorSnackbar"
-          color="info"
-          :timeout='5000'
-          bottom
-          left
-        >
-          <v-icon class="mr-3">cancel</v-icon>
-          <h3>{{authError.message}}</h3>
-          <v-btn
-            dark
-            flat
-            to="/signin"
-          >Sign in</v-btn>
-        </v-snackbar>
-
       </v-container>
     </main>
   </v-app>
@@ -211,25 +105,11 @@ export default {
   computed: {
     ...mapGetters(["searchResults", "authError", "user", "userFavorites"]),
     horizontalNavItems() {
-      let items = [{ icon: "chat", title: "ALL Words", link: "/words" }];
-      if (this.user) {
-        items = [{ icon: "chat", title: "Posts", link: "/posts" }];
-      }
-      return items;
-    },
-    sideNavItems() {
       let items = [
-        { icon: "chat", title: "Posts", link: "/posts" },
-        { icon: "lock_open", title: "Sign In", link: "/signin" },
-        { icon: "create", title: "Sign Up", link: "/signup" }
+        { icon: "chat", title: "ALL Words", link: "/words" },
+        { icon: "done", title: "Take Test", link: "/test" }
       ];
-      if (this.user) {
-        items = [
-          { icon: "chat", title: "Posts", link: "/posts" },
-          { icon: "stars", title: "Create Post", link: "/post/add" },
-          { icon: "account_box", title: "Profile", link: "/profile" }
-        ];
-      }
+
       return items;
     }
   },
