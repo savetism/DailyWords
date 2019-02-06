@@ -7,6 +7,7 @@
     <v-list
       v-if="viewWords.length > 0"
       two-line
+      @dblclick.native="testMode = !testMode"
     >
       <template v-for="(viewWord, index) in viewWords">
         <v-list-tile
