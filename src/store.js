@@ -234,10 +234,10 @@ export default new Vuex.Store({
         .then(({ data }) => {
           console.log('data From Mutation: ', data);
           commit('setLoading', false);
-          // console.log('Object.values(data)', Object.values(data));
-          const viewWords = [...state.viewWords, ...Object.values(data)];
-          // console.log('viewWords from mutate', viewWords);
-          commit('setViewWords', viewWords);
+          // // console.log('Object.values(data)', Object.values(data));
+          // const viewWords = [...state.viewWords, ...Object.values(data)];
+          // // console.log('viewWords from mutate', viewWords);
+          // commit('setViewWords', viewWords);
           router.push('/words');
         })
         .catch(err => {

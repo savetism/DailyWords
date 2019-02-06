@@ -107,7 +107,7 @@ import { mapGetters } from "vuex";
 export default {
   name: "home",
   created() {
-    this.wordPairs.length === 0 && this.$store.dispatch("WordBucket");
+    this.$store.dispatch("WordBucket");
   },
   data() {
     return {
