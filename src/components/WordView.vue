@@ -4,6 +4,10 @@
     mt-5
     pt-5
   >
+    <p
+      class="text-xs-right"
+      v-if="viewWords.length > 0"
+    > Number of Words: {{viewWords.length}}</p>
     <v-list
       v-if="viewWords.length > 0"
       two-line
