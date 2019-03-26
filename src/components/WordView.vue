@@ -14,28 +14,12 @@
       @dblclick.native="testMode = !testMode"
     >
       <template v-for="(viewWord, index) in viewWords">
-        <v-list-tile
+        <WordItem
           :key="`${viewWord.id} - ${viewWord.word}`"
-          avatar
-          ripple
-        >
-          <v-list-tile-content>
-            <v-list-tile-title>{{ viewWord.word }}</v-list-tile-title>
-            <v-list-tile-sub-title>{{ viewWord.translation }}</v-list-tile-sub-title>
-          </v-list-tile-content>
-          <v-list-tile-action v-if="testMode">
-            <v-btn
-              icon
-              ripple
-              @click="deleteWordPair(viewWord.id)"
-            >
-              <v-icon
-                class="text-xs-right"
-                ml-a
-              >clear</v-icon>
-            </v-btn>
-          </v-list-tile-action>
-        </v-list-tile>
+          :viewWord="viewWord"
+          :testMode="testMode"
+          :deleteWordPair="deleteWordPair"
+        />
         <v-divider
           v-if="index + 1 < viewWords.length"
           :key="viewWord.id"
@@ -48,9 +32,13 @@
 
 <script>
 import { mapGetters } from "vuex";
+import WordItem from "./WordItem";
 
 export default {
   name: "home",
+  components: {
+    WordItem
+  },
   data() {
     return {
       testMode: false
